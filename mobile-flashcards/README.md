@@ -19,7 +19,11 @@ If Yarn was installed when the project was initialized, then dependencies will h
 
 ### `npm install`
 
+Install the app dependencies.
+
 ### `npm start`
+
+Runs your app in development mode. Use 'a' for Android, 'i' for iOS.
 
 ## Sample JSON Data
 
