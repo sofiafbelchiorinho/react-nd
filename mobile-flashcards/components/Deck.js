@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, TouchableHighlight, StyleSheet } from 'react-native';
 import { blue, white } from './../colors'
 import { connect } from 'react-redux'
 import {fetchData} from './../actions'
@@ -18,11 +18,11 @@ class Deck extends React.Component {
         <Text style={styles.deckCardsNumber}>{deck.questions.length} cards</Text>
         <TouchableOpacity style={[styles.deckBtn, styles.addCardBtn]}
           onPress={() => navigation.navigate('AddCard', {deckId: deck.title})}>
-          <Text style={styles.addCardBtnText}>Add Card</Text>
+          <Text style={styles.addCardBtnText}>Create New Question</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.deckBtn, styles.quizBtn]}
           onPress={() => navigation.navigate('Quiz', {deckId: deck.title})}>
-          <Text style={styles.quizBtnText}>Start Quiz</Text>
+          <Text style={styles.quizBtnText}>Start a Quiz</Text>
         </TouchableOpacity>
       </View>
     );
@@ -74,13 +74,15 @@ const styles = StyleSheet.create({
     borderRadius: 4
   },
   addCardBtn: {
-    backgroundColor: white,
+    backgroundColor: white, 
     borderColor: blue
   },
   quizBtnText: {
-    color: white
+    color: white,
+    textAlign: 'center'
   },
   addCardBtnText: {
-    color: blue
+    color: blue,
+    textAlign: 'center'
   }
 })

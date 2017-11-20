@@ -19,7 +19,7 @@ class DeckList extends React.Component {
       <View>
         <Text style={styles.deckName}>{item.title}</Text>   
         <Text style={styles.deckCardsNumber}>{item.questions.length} cards</Text>   
-      </View>  
+      </View>
     </TouchableOpacity>)
   }
   

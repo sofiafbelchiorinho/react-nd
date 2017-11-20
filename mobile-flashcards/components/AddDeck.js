@@ -35,7 +35,7 @@ class AddDeck extends React.Component {
           onChangeText={this.handleTextChange}
         />
         <TouchableOpacity style={styles.btn} onPress={this.handleAddDeck}>
-          <Text style={{color: white}}>Submit</Text>
+          <Text style={{color: white}}>Create Deck</Text>
         </TouchableOpacity>
       </View>
     );

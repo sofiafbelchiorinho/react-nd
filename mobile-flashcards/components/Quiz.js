@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { blue, white, red, green } from './../colors'
+import { blue, white, red, green, pink, orange, purple } from './../colors'
+import { setLocalNotification, clearLocalNotification } from '../utils/helpers'
 import { connect } from 'react-redux'
 import {fetchData} from './../actions'
 
@@ -65,25 +66,29 @@ class Quiz extends React.Component {
     const question = questions[currentQuestion];
 
     if(!question){
-      let score = (this.state.rightAnswers / this.props.questions.length) * 100;
-      let endMsg = score > 80 ?  `Congratulations! Your on your way to master ${this.props.deck.title}` : `Nice try! Keep on studying ${this.props.deck.title}`;
-      
+      let score = Math.round(((this.state.rightAnswers / this.props.questions.length) * 100), 2);
+      let endMsg = score > 80 ?  `Congratulations! Your on your way to master ${this.props.deck.title}` : `Nice try! Keep on studying ${this.props.deck.title}`; 
+      clearLocalNotification().then(setLocalNotification());
+
       return (<ScrollView>
-        <Text>Your score is: {score}</Text>     
-        <Text>{endMsg}</Text>
-        <TouchableOpacity  
-            onPress={() => this.restartQuiz()}> 
-          <Text style={{color: red}}>Restart Quiz</Text>    
-        </TouchableOpacity>
+        <View style={styles.results}>
+          <Text>Your score is: {score} %</Text>     
+          <Text style={{marginBottom: 20}}>{endMsg}</Text>
+          <TouchableOpacity  
+              style={[styles.quizBtn, {backgroundColor: purple}]} 
+              onPress={() => this.restartQuiz()}> 
+            <Text style={{color: white}}>Restart Quiz</Text>    
+          </TouchableOpacity>
+        </View>
       </ScrollView>)
     }else{
       return (<View  style={styles.quiz}>              
       <ScrollView> 
         <Text style={styles.progress}>{currentQuestion+1}/{questions.length}</Text>
-        <View style={styles.card}>        
+        <View>        
           <View style={{flex: 1}}>
             { !showAnswer && 
-              <View>
+              <View style={styles.card}>
                 <Text style={styles.question}>{question.question}</Text>
                 <TouchableOpacity  
                     style={styles.redLinkBtn}
@@ -93,13 +98,13 @@ class Quiz extends React.Component {
               </View>
             }
             { showAnswer && 
-              <View>
-              <Text style={styles.question}>{question.answer}</Text>
-              <TouchableOpacity  
-                  style={styles.redLinkBtn}
-                  onPress={() => this.peekAnswer()}> 
-                <Text style={{color: red}}>Question</Text>    
-              </TouchableOpacity>
+              <View style={styles.card}>
+                <Text style={styles.question}>{question.answer}</Text>
+                <TouchableOpacity  
+                    style={styles.redLinkBtn}
+                    onPress={() => this.peekAnswer()}> 
+                  <Text style={{color: red}}>Question</Text>    
+                </TouchableOpacity>
               </View>
             }   
             <TouchableOpacity 
@@ -148,27 +153,44 @@ const styles = StyleSheet.create({
   quiz: { 
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'stretch'
+    alignItems: 'stretch', 
+    padding: 10
+  },
+  results: { 
+    backgroundColor: white,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    padding: 15,
+    margin: 10,
+    borderRadius: 4,
   },
   card:{
-    flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'stretch'
+    alignSelf: 'stretch',
+    backgroundColor: white,
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 20,
+    padding: 15,
+    borderRadius: 4
   },
-  progress:{
+  progress:{ 
     flex: 1,
     alignItems: 'flex-start'
   },
   question:{
     fontSize: 20,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginBottom: 10
   },
   quizBtn: {
     padding: 10,
     width: 100,
     borderRadius: 4,
     alignItems: 'center',
-    marginTop: 20,
+    marginBottom: 10,
     borderRadius: 4,
     alignSelf: 'center', 
   },
