@@ -1,14 +1,14 @@
 import React from 'react';
 import {addCard, _addCard} from './../actions'
 import { connect } from 'react-redux'
-import { blue, white} from './../colors'
+import { purple, lightPurp, white, red} from './../colors'
 import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 
 class AddCard extends React.Component {
 
   state = {
-    question: "",
-    answer: ""
+    question: null,
+    answer: null
   }
 
   handleQuestionChange = (question) => {
@@ -21,16 +21,14 @@ class AddCard extends React.Component {
 
   handleAddCard = () => {
     const { deck } = this.props
-    const { question, answer } = this.state;
-    
+    const { question, answer } = this.state;    
     this.props._addCard(deck, { question, answer});
-   
-    this.setState(() => ({
-      question: "",
-      answer: ""
-    }))
-    
     this.props.navigation.navigate('Deck', {deckId: deck.title});
+    this.setState(() => ({
+      question: null,
+      answer: null
+    }))   
+   
   }
 
   render() {
@@ -38,8 +36,13 @@ class AddCard extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput style={styles.control} placeholder="Enter the question" value={question} onChangeText={this.handleQuestionChange} />
+        {!question && <Text style={{color: red, fontSize: 10}} >mandatory field</Text>}
         <TextInput style={styles.control} placeholder="Enter the answer" value={answer} onChangeText={this.handleAnswerChange} />
-        <TouchableOpacity style={styles.btn} onPress={this.handleAddCard}>
+        {!answer && <Text style={{color: red, fontSize: 10}} >mandatory field</Text>}
+        <TouchableOpacity 
+            style={(!question || !answer) ? [styles.btn, styles.disabled] : styles.btn} 
+            onPress={this.handleAddCard} 
+            disabled={!question || !answer}>
           <Text style={{color: white}}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -85,6 +88,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 4,
     alignSelf: 'center', 
-    backgroundColor: blue
+    backgroundColor: purple
+  },
+  disabled:  {
+    backgroundColor: lightPurp
   }
 })

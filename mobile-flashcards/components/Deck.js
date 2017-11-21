@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, TouchableHighlight, StyleSheet } from 'react-native';
-import { blue, white } from './../colors'
+import { purple, lightPurp, white } from './../colors'
 import { connect } from 'react-redux'
 import {fetchData} from './../actions'
 
@@ -20,7 +20,9 @@ class Deck extends React.Component {
           onPress={() => navigation.navigate('AddCard', {deckId: deck.title})}>
           <Text style={styles.addCardBtnText}>Create New Question</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.deckBtn, styles.quizBtn]}
+        <TouchableOpacity 
+          style={deck.questions.length == 0 ? [styles.deckBtn, styles.quizBtn, styles.disabled] : [styles.deckBtn, styles.quizBtn] } 
+          disabled={deck.questions.length == 0}
           onPress={() => navigation.navigate('Quiz', {deckId: deck.title})}>
           <Text style={styles.quizBtnText}>Start a Quiz</Text>
         </TouchableOpacity>
@@ -70,19 +72,22 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   quizBtn: {
-    backgroundColor: blue,   
+    backgroundColor: purple,   
     borderRadius: 4
   },
   addCardBtn: {
     backgroundColor: white, 
-    borderColor: blue
+    borderColor: purple
+  },
+  disabled: {
+    backgroundColor: lightPurp, 
   },
   quizBtnText: {
     color: white,
     textAlign: 'center'
   },
   addCardBtnText: {
-    color: blue,
+    color: purple,
     textAlign: 'center'
   }
 })

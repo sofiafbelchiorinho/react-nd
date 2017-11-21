@@ -1,13 +1,13 @@
 import React from 'react';
 import {addDeck, _addDeck} from './../actions'
 import { connect } from 'react-redux'
-import { blue, white} from './../colors'
+import { purple, white, lightPurp, red} from './../colors'
 import { Text, View, TouchableOpacity, TextInput,StyleSheet } from 'react-native';
 
 class AddDeck extends React.Component {
 
   state = {
-    input: ""
+    input: null
   }
 
   handleTextChange = (input) => {
@@ -18,10 +18,10 @@ class AddDeck extends React.Component {
 
   handleAddDeck = () => {
     this.props._addDeck(this.state.input);  
+    this.props.navigation.navigate('Deck', {deckId: this.state.input});
     this.setState(() => ({
-      input: ""
-    }))
-    this.props.navigation.navigate('DeckList');
+      input: null
+    }));   
   }
 
   render() {
@@ -34,7 +34,8 @@ class AddDeck extends React.Component {
           value={input}
           onChangeText={this.handleTextChange}
         />
-        <TouchableOpacity style={styles.btn} onPress={this.handleAddDeck}>
+        {!input && <Text style={{color: red, fontSize: 10}} >mandatory field</Text>}
+        <TouchableOpacity style={!input ? [styles.btn, styles.disabled] : styles.btn} onPress={this.handleAddDeck} disabled={!input}>
           <Text style={{color: white}}>Create Deck</Text>
         </TouchableOpacity>
       </View>
@@ -84,6 +85,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 4,
     alignSelf: 'center', 
-    backgroundColor: blue
+    backgroundColor: purple
+  },
+  disabled:{
+    backgroundColor: lightPurp
   }
 })
